@@ -1,0 +1,54 @@
+SNMP Architecture
+
+Manager = Observium (using virual machine)
+
+Manager instructions =>
+	Install Observium in a virtual manager
+	Configure /etc/hosts (This file is only to add agents)
+	
+Windows Agent:
+	Install SNMP service
+	Configure SNMP service, using a community 
+
+Linux Agent:
+	Install package: snmp, snmpd
+	Configure snmpd.conf using snmpconfig
+
+Instalation of Obervium stepts:
+	In VB you have to choose Linux and Debian64 bits
+	Create a virtual disk 
+	Use VDI
+	Dimanic allocated 
+	Choose 4 gb
+	In storage put IDE Primary master
+	In network you have to change NAT to Bridged adapter (Wi-fi) but if you wanna use eth cable select eth0
+	and you have to enable in advanced mode the Promiscous mode (Allow all)
+	Install hd 
+	Select Second option in partition (use entire disk)
+	And you have to put yes (GRUB)
+	After the instalation you have to put your credentials:
+		Pepechido2 (password for all the users)
+
+	Were not using API so click skip
+	After that login into the url direction and the user is admin and Pepechido2 (http://10.100.64.162/)
+	And quit the console
+	When youre only in terminal mode put: root and enter key
+
+Windows Agent:
+	In vb you have to put the same as Observium in Network mode (check Linux network configuration)
+	Go to panelcontrol/Programs/Turn on off features/ and turn on SNMP and second option 
+	After that you have to search "local services" 
+	You have to start SNMP trap manually always 
+	You have to edit SNMP Service, (right clic and properties) 
+		Clic on traps, put a community name (its like an authentication level) (grupo4cm2)
+	In security option clic add, READ/WRITE and in a community name put grupo4cm2
+	And put SNMP packet from any hosts 
+	And after that, you have yo restart the service
+	Disable the firewall (both options)
+	Check your ip with ipconfig (ipconfig) Remember you have to always be in the same network 
+
+Observium
+	In nano /etc/hosts/ put the ip of windows and the name you wanna use 	
+	ping nameofthe device
+	Now in the panel put skip ICMP, v2c, UDP, and community you have to put the same name in windows grupo4cm2
+		and remember the hostname is the name that is on the nano file
