@@ -52,3 +52,26 @@ Observium
 	ping nameofthe device
 	Now in the panel put skip ICMP, v2c, UDP, and community you have to put the same name in windows grupo4cm2
 		and remember the hostname is the name that is on the nano file
+
+Linux
+	sudo apt update
+	sudo apt-get install snmp snmpd(listen the port with a demon) 
+	sudo gedit /etc/snmp/snmpd.conf
+	snmpconf -r none -g basic_setup
+		y
+		location of the system: "lab. escom. ipn. "
+		sys contact: buscadordebugs
+		n
+		Dou you want to configure the agents acces control: y
+		Dou you want to allow SNMPv3: n
+		Dou you ...: n
+		Dou you want to allow SNMPv1 ... read-write: y
+		Comunity_name: gr_4cm2
+		Put RETURN for all (Enter)
+		OID: RETURN for all (Enter)
+		And finally write no (and so on ...) 
+	move the /usr/share/snmp 
+	sudo mv snmpd.conf /etc/snmp/snmpd.conf
+	sudo service snmpd restart
+	Remember to add the new machine on observium (to see the ip on linux is "ip addr show")
+		
