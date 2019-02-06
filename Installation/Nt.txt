@@ -74,4 +74,4 @@ Linux
 	sudo mv snmpd.conf /etc/snmp/snmpd.conf
 	sudo service snmpd restart
 	Remember to add the new machine on observium (to see the ip on linux is "ip addr show")
-		
+	If youre on linux you could use "sudo tcpdump -i any -nn port snmp"		
