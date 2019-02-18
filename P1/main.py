@@ -1,5 +1,9 @@
+import sys
+sys.path.append('./tools')
 import tkinter as tk
 from tkinter import ttk
+import information as i
+
 
 class Application:
     def __init__(self, master):
@@ -50,4 +54,5 @@ class Application:
 
 master = tk.Tk()
 app = Application(master)
+i.get_agents()
 master.mainloop()
