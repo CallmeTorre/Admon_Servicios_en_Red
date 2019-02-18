@@ -34,16 +34,19 @@ class Application:
         self.delete_agent.grid(row=1, column = 1)
 
     def add_agent_panel(self):
-        ents = {}
+        entrys = []
         new_agent_window = tk.Toplevel(self.master)
         new_agent_window.title("Agregar dispositivo")
         for i, elem in enumerate(self.general_info[:len(self.general_info) -2]):
             tk.Label(new_agent_window, text=elem).grid(row=i)
-            entry = tk.Entry(new_agent_window, text='', width=40).grid(row=i, column=1)
-        tk.Button(new_agent_window, text="Add", width=10, command=lambda: self.add_agent()).grid(row=5, column=0)
+            entry = tk.Entry(new_agent_window, text='', width=40)
+            entrys.append(entry)
+            entry.grid(row=i, column=1)
+        tk.Button(new_agent_window, text="Add", width=10, command=lambda: self.add_agent(entrys)).grid(row=5, column=0)
 
-    def add_agent(self):
-        print("Hi there")
+    def add_agent(self, entrys):
+        for _ , elem in enumerate(entrys):
+            print(elem.get())
 
 master = tk.Tk()
 app = Application(master)
