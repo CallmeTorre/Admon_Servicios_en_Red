@@ -2,7 +2,8 @@ import sys
 sys.path.append('./tools')
 import tkinter as tk
 import information as i
-import network as n
+import network as nt
+import graph as gr
 from tkinter import ttk
 
 class Application:
@@ -15,7 +16,6 @@ class Application:
         self.master.title("Network Administrator")
         self.createButtons()
         self.createTreeView()
-        self.updateValuesIntoTreeView()
 
     def createButtons(self):
         self.add_agent_btn = tk.Button(self.master, text='New Agent', command=self.addAgentPanel)
@@ -34,20 +34,21 @@ class Application:
         self.treeview.bind('<Button-1>', self.enableDelete)
         self.treeview.bind("<Double-1>", lambda event: self.deviceInformationPanel(event))
         self.treeview.grid(row=0, column=0, columnspan=2)
+        self.updateValuesIntoTreeView()
 
     def enableDelete(self, event):
         self.delete_agent['state'] = 'normal'
 
     def deviceInformationPanel(self, event):
-        print(self.treeview.item(self.treeview.selection()[0]),"values")
         self.agent_information_window = tk.Toplevel(self.master)
         self.agent_information_window.title("Agent")
         self.agent_ntb = ttk.Notebook(self.agent_information_window)
-        self.createTabs()
+        self.createTabsInformationPanel()
         self.fillInformationTab()
+        self.fillGraphTab()
         self.agent_ntb.grid(row=0, column=0)
 
-    def createTabs(self):
+    def createTabsInformationPanel(self):
         self.information_frame = ttk.Frame(self.agent_ntb)
         self.agent_ntb.add(self.information_frame, text="Information")
         self.graphs_frame = ttk.Frame(self.agent_ntb)
@@ -56,10 +57,27 @@ class Application:
         self.agent_ntb.enable_traversal()
 
     def fillInformationTab(self):
-        sistema=ttk.Label(self.information_frame,text="SO :").grid(row=3)
-        localizacion=ttk.Label(self.information_frame,text="Localizacion :").grid(row=4)
-        equipo=ttk.Label(self.information_frame,text="Equipo :").grid(row=5)
-        tiempo=ttk.Label(self.information_frame,text="Tiempo :").grid(row=6)
+        selected_item = self.treeview.selection()[0]
+        ip = self.treeview.item(selected_item,"text")
+        data = self.treeview.item(selected_item,"values")
+        community, port = data[0], data[3]
+        system = nt.getOS(community,ip,port)
+        adress = nt.getLocation(community,ip,port)
+        computer = nt.getName(community,ip,port)
+        time = nt.getUpTime(community,ip,port)
+
+        ttk.Label(self.information_frame,text="SO :" + system).grid(row=1)
+        ttk.Label(self.information_frame,text="Adress :" + adress).grid(row=2)
+        ttk.Label(self.information_frame,text="Computer :" + computer).grid(row=3)
+        ttk.Label(self.information_frame,text="Time :" + time).grid(row=4)
+
+    #TODO refacor this method
+    def fillGraphTab(self):
+        gr.hilotrafico(community,ip,port)
+        photo = tk.PhotoImage(file ="./data/rd/tcp/trafico.png")
+        lbTrafico = ttk.Label(self.graphs_frame,image=photo, text="Grafica1")
+        lbTrafico.pack(pady=(10,10))
+        lbTrafico.image = photo
 
     def updateValuesIntoTreeView(self):
         for old_value in self.treeview.get_children():
@@ -76,9 +94,9 @@ class Application:
             entry = tk.Entry(self.new_agent_window, text='', width=40)
             entries.append(entry)
             entry.grid(row=i, column=1)
-        tk.Button(self.new_agent_window, text="Add", width=10, command=lambda: self.getEntries(entries)).grid(row=5, column=0)
+        tk.Button(self.new_agent_window, text="Add", width=10, command=lambda: self.getEntriesAgentPanel(entries)).grid(row=5, column=0)
 
-    def getEntries(self, entries):
+    def getEntriesAgentPanel(self, entries):
         i.add_agent(" ".join(str(entry.get()) for entry in entries) + ' up')
         self.updateValuesIntoTreeView()
         self.new_agent_window.destroy()

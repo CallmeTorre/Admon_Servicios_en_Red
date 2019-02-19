@@ -1,5 +1,5 @@
 from pysnmp.hlapi import *
-
+#TODO refactor all this file
 def consulta(nomComunidad,ip,puerto,oid):
   errorIndication, errorStatus, errorIndex, varBinds = next(
       getCmd(SnmpEngine(),
@@ -21,7 +21,7 @@ def consulta(nomComunidad,ip,puerto,oid):
       return cadena.split("=")[1]
 
 
-def checatiempo(nomComunidad,ip,puerto):
+def getUpTime(nomComunidad,ip,puerto):
   timetick = int(consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.25.1.1.0'))
   dias = int(timetick/8640000)
   timetick -= dias*8640000
@@ -38,19 +38,19 @@ def checatiempo(nomComunidad,ip,puerto):
     time = str(minutos)+"min "+str(segundos)+"seg"
   return time
 
-def checalocation(nomComunidad,ip,puerto):
+def getLocation(nomComunidad,ip,puerto):
   return consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.1.6.0')
 
-def checaNombre(nomComunidad,ip,puerto):
+def getName(nomComunidad,ip,puerto):
   return consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.1.5.0')
 
-def checaSistema(nomComunidad,ip,puerto):
+def getOS(nomComunidad,ip,puerto):
   return consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.1.1.0')
 
-def checaProcesos(nomComunidad,ip,puerto):
+def getProcesses(nomComunidad,ip,puerto):
   return consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.25.1.6.0')
 
-def checaFechaHora(nomComunidad,ip,puerto):
+def getDateAndTime(nomComunidad,ip,puerto):
   cadena = consulta(nomComunidad,ip,puerto,'1.3.6.1.2.1.25.1.2.0')
   year = int(cadena[3:7],16)
   month = int(cadena[7:9],16)
@@ -60,3 +60,6 @@ def checaFechaHora(nomComunidad,ip,puerto):
   seconds = int(cadena[15:17],16)
   d_sec = int(cadena[17:19],16)
   return str(year)+"-"+str(month)+"-"+str(day)+", "+str(hour)+":"+str(minutes)+":"+str(seconds)+"."+str(d_sec)
+
+def hasConexion(host):
+    return not bool(os.system("ping -c 1 " + host))

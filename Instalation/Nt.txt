@@ -46,6 +46,9 @@ Windows Agent:
 	And after that, you have yo restart the service
 	Disable the firewall (both options)
 	Check your ip with ipconfig (ipconfig) Remember you have to always be in the same network 
+	If you wanna retrieve information you have to install NET-SNMP:
+		snmpget -v2c -c grupo4cm2 10.100... 1.3.6.1.2.1.1.1.0
+		snmpset -v2c -c grupo4cm2 10.100... 1.3.6.1.2.1.1.6.0 s "Merica"
 
 Observium
 	In nano /etc/hosts/ put the ip of windows and the name you wanna use 	
