@@ -6,13 +6,15 @@ import time
 from pysnmp.hlapi import *
 from numpy import array
 import threading
+
 #TODO: Refactor this file
+
 threads = list()
 def hilotrafico(nomComunidad,ip,puerto):
-    print("Hilo trafico activo")
+    print("Hilo tcp activo")
     ret = rrdtool.create("./data/rd/tcp/trafico.rrd",
                          "--start", 'N',
-                         "--step", '60',
+                         "--step", '10',
                          "DS:inoctets:COUNTER:60:U:U",
                          "DS:outoctets:COUNTER:60:U:U",
                          "RRA:AVERAGE:0.5:6:10",
@@ -20,6 +22,7 @@ def hilotrafico(nomComunidad,ip,puerto):
     if ret:
         print(rrdtool.error())
 
+    #threads = list()
     for i in range(2):
         if(i==0):
             t = threading.Thread(target=trafico,args=(nomComunidad,ip,puerto))
@@ -38,10 +41,10 @@ def trafico(nomComunidad,ip,puerto):
     while 1:
         total_input_traffic = int(
             consultaSNMP(nomComunidad, ip,
-                         '1.3.6.1.2.1.2.2.1.10.3',puerto))
+                         '1.3.6.1.2.1.6.10.0',puerto))
         total_output_traffic = int(
             consultaSNMP(nomComunidad, ip,
-                         '1.3.6.1.2.1.2.2.1.16.3',puerto))
+                         '1.3.6.1.2.1.6.11.0',puerto))
 
         valor = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         #print(valor)
@@ -65,13 +68,12 @@ def graficaTrafico():
         ret = rrdtool.graph("./data/rd/tcp/trafico.png",
                             "--start", c,
                             #"--end", "N",
-                            "--title=Trafico",
-                            "--vertical-label=Bytes/s",
+                            "--title=TCP",
+                            "--vertical-label=SEG IN",
                             "DEF:inoctets=./data/rd/tcp/trafico.rrd:inoctets:AVERAGE",
                             "DEF:outoctets=./data/rd/tcp/trafico.rrd:outoctets:AVERAGE",
-                            "AREA:inoctets#00FF00:In traffic",
-                            "LINE1:outoctets#0000FF:Out traffic\r")
-
+                            "AREA:inoctets#00FF00:  ",
+                            "LINE1:outoctets#0000FF:SEG Out \r")
         time.sleep(30)
 
 def consultaSNMP(comunidad,host,oid,puerto):
