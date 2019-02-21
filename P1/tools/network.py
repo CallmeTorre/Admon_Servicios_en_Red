@@ -21,7 +21,7 @@ def getSnmpInfo(communityName, ip, port, oid):
     return result.split("=")[1]
 
 def getInputTraffic(communityName, ip, port):
-    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.DateAndTime.value)
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.InputTraffic.value)
 
 def getOutputTraffic(communityName, ip, port):
     return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.OutputTraffic.value)

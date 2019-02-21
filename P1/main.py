@@ -98,7 +98,7 @@ class Application:
         entries = []
         self.new_agent_window = tk.Toplevel(self.master)
         self.new_agent_window.title("Agregar dispositivo")
-        for i, elem in enumerate(self.general_info[:len(self.general_info) -2]):
+        for i, elem in enumerate(self.general_info[:len(self.general_info) -1]):
             tk.Label(self.new_agent_window, text=elem).grid(row=i)
             entry = tk.Entry(self.new_agent_window, text='', width=40)
             entries.append(entry)
