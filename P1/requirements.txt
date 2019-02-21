@@ -1,0 +1,7 @@
+Pillow==5.4.1
+ply==3.11
+pyasn1==0.4.5
+pycryptodomex==3.7.3
+pysmi==0.3.3
+pysnmp==4.4.9
+rrdtool==0.1.14
