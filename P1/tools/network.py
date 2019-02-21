@@ -31,6 +31,25 @@ def getInputSNMPTraffic(communityName, ip, port):
 def getOutputSNMPTraffic(communityName, ip, port):
     return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.SNMPOutput.value)
 
+def getInputICMPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.ICMPInput.value)
+
+def getOutputICMPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.ICMPOutput.value)
+
+def getInputUDPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UDPInput.value)
+
+def getOutputUDPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UDPOutput.value)
+
+def getInputTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.TrafficInput.value)
+
+def getOutputTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.TrafficOutput.value)
+
+
 def getUpTime(communityName, ip, port):
     timetick = int(getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UpTime.value))
     days = int(timetick/8640000)

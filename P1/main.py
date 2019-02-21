@@ -1,4 +1,3 @@
-from PIL import ImageTk
 import sys
 sys.path.append('./tools')
 import time
@@ -6,6 +5,8 @@ import tkinter as tk
 import information as i
 import threading as thr
 from tkinter import ttk
+from PIL import ImageTk, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class Application:
     def __init__(self, master):
@@ -75,8 +76,8 @@ class Application:
 
     def fillGraphTab(self):
         i.generateAllTraffic(self.community, self.ip, self.port)
-        #i.generateTraffic(self.community, self.ip, self.port)
-        #i.generateUDPTraffic(self.community, self.ip, self.port)
+        #i.generateTCPTraffic(self.community, self.ip, self.port)
+        #i.generateSNMPTraffic(self.community, self.ip, self.port)
         #i.generateICMPTraffic(self.community, self.ip, self.port)
         thr.Thread(target=self.update_graphs).start()
 
@@ -87,11 +88,15 @@ class Application:
                 widget.destroy()
             photo = ImageTk.PhotoImage(file ="./data/rd/tcp/trafico.png")
             photo2 = ImageTk.PhotoImage(file ="./data/rd/snmp/trafico.png")
+            photo3 = ImageTk.PhotoImage(file ="./data/rd/icmp/trafico.png")
+            photo4 = ImageTk.PhotoImage(file ="./data/rd/udp/trafico.png")
+            photo5 = ImageTk.PhotoImage(file ="./data/rd/traffic/trafico.png")
+
             lbTrafico = ttk.Label(self.graphs_frame,image=photo, text="Grafica1")
             lbTrafico2 = ttk.Label(self.graphs_frame,image=photo2, text="Grafica2")
-            lbTrafico3 = ttk.Label(self.graphs_frame,image=photo, text="Grafica3")
-            lbTrafico4 = ttk.Label(self.graphs_frame,image=photo, text="Grafica4")
-            lbTrafico5 = ttk.Label(self.graphs_frame,image=photo, text="Grafica5")
+            lbTrafico3 = ttk.Label(self.graphs_frame,image=photo3, text="Grafica3")
+            lbTrafico4 = ttk.Label(self.graphs_frame,image=photo4, text="Grafica4")
+            lbTrafico5 = ttk.Label(self.graphs_frame,image=photo5, text="Grafica5")
 
             lbTrafico.grid(row=0, column=0)
             lbTrafico2.grid(row=0, column=1)
@@ -99,7 +104,7 @@ class Application:
             lbTrafico4.grid(row=1, column=1)
             lbTrafico5.grid(row=2, column=0)
 
-            time.sleep(10)
+            time.sleep(30)
 
 
     def updateValuesIntoTreeView(self):
