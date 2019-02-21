@@ -1,10 +1,14 @@
 import sys
 import time
+import rrdt
 import rrdtool
 import network as nt
 import threading as thr
+
 sys.path.append('./data')
 agents_db = './data/agents.txt'
+tcp_db = './data/rd/tcp'
+snmp_db = './data/rd/snmp'
 
 def getAgents():
     agents = []
@@ -39,8 +43,11 @@ def getAgentName(community, ip, port):
 def getAgentUptime(community, ip, port):
     return nt.getUpTime(community, ip, port)
 
+def generateAllTraffic(community, ip, port):
+    pass
+
 def generateTCPTraffic(community, ip, port):
-    __createTCPDatabase()
+    rrdt.createRRDDatabase(tcp_db)
     thr.Thread(target=__generateTCPTraffic, args=(community, ip, port)).start()
     thr.Thread(target=__generateTCPImage).start()
 
@@ -49,33 +56,33 @@ def __generateTCPTraffic(community, ip, port):
     total_output_traffic = 0
 
     while True:
-        total_input_traffic = int(nt.getInputTraffic(community, ip, port))
-        total_output_traffic = int(nt.getOutputTraffic(community, ip, port))
+        total_input_traffic = int(nt.getInputTCPTraffic(community, ip, port))
+        total_output_traffic = int(nt.getOutputTCPTraffic(community, ip, port))
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdtool.update('./data/rd/tcp/trafico.rrd', value)
-        rrdtool.dump('./data/rd/tcp/trafico.rrd', './data/rd/tcp/trafico.xml')
+        rrdt.updateAndDumpRRDDatabase(tcp_db, value)
         time.sleep(1)
 
 def __generateTCPImage():
     current_time = str(int(time.time()))
     while True:
-        ret = rrdtool.graph("./data/rd/tcp/trafico.png",
-                            "--start", current_time,
-                            #"--end", "N",
-                            "--title=TCP",
-                            "--vertical-label=SEG IN",
-                            "DEF:inoctets=./data/rd/tcp/trafico.rrd:inoctets:AVERAGE",
-                            "DEF:outoctets=./data/rd/tcp/trafico.rrd:outoctets:AVERAGE",
-                            "AREA:inoctets#00FF00:  ",
-                            "LINE1:outoctets#0000FF:SEG Out \r")
+        rrdt.createRRDImage(tcp_db, current_time, "tcp")
         time.sleep(30)
 
-#TODO Add try catch
-def __createTCPDatabase():
-    rrdtool.create( "./data/rd/tcp/trafico.rrd",
-                    "--start", 'N',
-                    "--step", '10',
-                    "DS:inoctets:COUNTER:60:U:U",
-                    "DS:outoctets:COUNTER:60:U:U",
-                    "RRA:AVERAGE:0.5:6:10",
-                    "RRA:AVERAGE:0.5:1:10")
+def generateSNMPTraffic(community, ip, port):
+    rrdt.createRRDDatabase(snmp_db)
+    thr.Thread(target=__generateSNMPTraffic, args=(community, ip, port)).start()
+    thr.Thread(target=__generateSNMPImage).start()
+
+def __generateSNMPTraffic(community, ip, port):
+    while True:
+        total_input_traffic = int(nt.getInputSNMPTraffic(community, ip, port))
+        total_output_traffic = int(nt.getOutputSNMPTraffic(community, ip, port))
+        value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
+        rrdt.updateAndDumpRRDDatabase(snmp_db, value)
+        time.sleep(1)
+
+def __generateSNMPImage():
+    current_time = str(int(time.time()))
+    while True:
+        rrdt.createRRDImage(snmp_db, current_time, "snmp")
+        time.sleep(30)

@@ -68,12 +68,15 @@ class Application:
         time = i.getAgentUptime(self.community,self.ip,self.port)
 
         ttk.Label(self.information_frame,text="SO :" + system).grid(row=1)
-        ttk.Label(self.information_frame,text="Adress :" + adress).grid(row=2)
+        ttk.Label(self.information_frame,text="Address :" + adress).grid(row=2)
         ttk.Label(self.information_frame,text="Computer :" + computer).grid(row=3)
         ttk.Label(self.information_frame,text="Time :" + time).grid(row=4)
 
     def fillGraphTab(self):
-        i.generateTCPTraffic(self.community, self.ip, self.port)
+        i.generateAllTraffic(self.community, self.ip, self.port)
+        #i.generateTraffic(self.community, self.ip, self.port)
+        #i.generateUDPTraffic(self.community, self.ip, self.port)
+        #i.generateICMPTraffic(self.community, self.ip, self.port)
         thr.Thread(target=self.update_graphs).start()
 
     #TODO Refactor this method
@@ -82,9 +85,19 @@ class Application:
             for widget in self.graphs_frame.winfo_children():
                 widget.destroy()
             photo = tk.PhotoImage(file ="./data/rd/tcp/trafico.png")
+            photo2 = tk.PhotoImage(file ="./data/rd/snmp/trafico.png")
             lbTrafico = ttk.Label(self.graphs_frame,image=photo, text="Grafica1")
-            lbTrafico.pack(pady=(10,10))
-            lbTrafico.image = photo
+            lbTrafico2 = ttk.Label(self.graphs_frame,image=photo2, text="Grafica2")
+            lbTrafico3 = ttk.Label(self.graphs_frame,image=photo, text="Grafica3")
+            lbTrafico4 = ttk.Label(self.graphs_frame,image=photo, text="Grafica4")
+            lbTrafico5 = ttk.Label(self.graphs_frame,image=photo, text="Grafica5")
+
+            lbTrafico.grid(row=0, column=0)
+            lbTrafico2.grid(row=0, column=1)
+            lbTrafico3.grid(row=1, column=0)
+            lbTrafico4.grid(row=1, column=1)
+            lbTrafico5.grid(row=2, column=0)
+
             time.sleep(10)
 
 

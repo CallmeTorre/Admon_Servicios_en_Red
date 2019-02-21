@@ -1,5 +1,4 @@
 from pysnmp.hlapi import *
-
 from tools.constants import OIDPREFIX, OID
 
 def getSnmpInfo(communityName, ip, port, oid):
@@ -20,11 +19,17 @@ def getSnmpInfo(communityName, ip, port, oid):
             result += (' = '.join([x.prettyPrint() for x in varBind]))
     return result.split("=")[1]
 
-def getInputTraffic(communityName, ip, port):
-    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.InputTraffic.value)
+def getInputTCPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.TCPInputTraffic.value)
 
-def getOutputTraffic(communityName, ip, port):
-    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.OutputTraffic.value)
+def getOutputTCPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.TCPOutputTraffic.value)
+
+def getInputSNMPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.SNMPInput.value)
+
+def getOutputSNMPTraffic(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.SNMPOutput.value)
 
 def getUpTime(communityName, ip, port):
     timetick = int(getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UpTime.value))
