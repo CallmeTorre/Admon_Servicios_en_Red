@@ -1,6 +1,6 @@
 from pysnmp.hlapi import *
 
-OIDPREFIX = '1.3.6.1.2.1'
+from tools.constants import OIDPREFIX, OID
 
 def getSnmpInfo(communityName, ip, port, oid):
     errorIndication, errorStatus, errorIndex, varBinds = next(
@@ -21,13 +21,13 @@ def getSnmpInfo(communityName, ip, port, oid):
     return result.split("=")[1]
 
 def getInputTraffic(communityName, ip, port):
-    return getSnmpInfo(communityName, ip, port, OIDPREFIX + '.6.10.0')
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.DateAndTime.value)
 
 def getOutputTraffic(communityName, ip, port):
-    return getSnmpInfo(communityName, ip, port, OIDPREFIX + '.6.11.0')
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.OutputTraffic.value)
 
 def getUpTime(communityName, ip, port):
-    timetick = int(getSnmpInfo(communityName, ip, port, OIDPREFIX + '.25.1.1.0'))
+    timetick = int(getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UpTime.value))
     days = int(timetick/8640000)
     timetick -= days*8640000
     hours = int(timetick/360000)
@@ -44,19 +44,19 @@ def getUpTime(communityName, ip, port):
     return time
 
 def getLocation(communityName, ip, port):
-    return getSnmpInfo(communityName,ip,port, OIDPREFIX + '.1.6.0')
+    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.Location.value)
 
 def getName(communityName, ip, port):
-    return getSnmpInfo(communityName,ip,port, OIDPREFIX + '.1.5.0')
+    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.Name.value)
 
 def getOS(communityName, ip, port):
-    return getSnmpInfo(communityName,ip,port, OIDPREFIX + '.1.1.0')
+    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.OS.value)
 
 def getProcesses(communityName, ip, port):
-    return getSnmpInfo(communityName,ip,port, OIDPREFIX + '.25.1.6.0')
+    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.Processes.value)
 
 def getDateAndTime(communityName, ip, port):
-    snmpInfo = getSnmpInfo(communityName,ip,port, OIDPREFIX + '.25.1.2.0')
+    snmpInfo = getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.DateAndTime.value)
     year = int(snmpInfo[3:7], 16)
     month = int(snmpInfo[7:9], 16)
     day = int(snmpInfo[9:11], 16)
