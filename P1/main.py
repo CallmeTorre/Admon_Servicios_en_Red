@@ -1,3 +1,4 @@
+from PIL import ImageTk
 import sys
 sys.path.append('./tools')
 import time
@@ -84,8 +85,8 @@ class Application:
         while True:
             for widget in self.graphs_frame.winfo_children():
                 widget.destroy()
-            photo = tk.PhotoImage(file ="./data/rd/tcp/trafico.png")
-            photo2 = tk.PhotoImage(file ="./data/rd/snmp/trafico.png")
+            photo = ImageTk.PhotoImage(file ="./data/rd/tcp/trafico.png")
+            photo2 = ImageTk.PhotoImage(file ="./data/rd/snmp/trafico.png")
             lbTrafico = ttk.Label(self.graphs_frame,image=photo, text="Grafica1")
             lbTrafico2 = ttk.Label(self.graphs_frame,image=photo2, text="Grafica2")
             lbTrafico3 = ttk.Label(self.graphs_frame,image=photo, text="Grafica3")
