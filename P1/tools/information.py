@@ -55,7 +55,7 @@ def generateAllTraffic(community, ip, port):
     thr.Thread(target=__generateTCPTraffic, args=(community, ip, port)).start()
     thr.Thread(target=__generateSNMPTraffic, args=(community, ip, port)).start()
     thr.Thread(target=__generateICMPTraffic, args=(community, ip, port)).start()
-    #thr.Thread(target=__generateUDPTraffic, args=(community, ip, port)).start()
+    thr.Thread(target=__generateUDPTraffic, args=(community, ip, port)).start()
     thr.Thread(target=__generateTraffic, args=(community, ip, port)).start()
     thr.Thread(target=__generateAllImages).start()
 
@@ -88,7 +88,10 @@ def __generateICMPTraffic(community, ip, port):
 
 def __generateUDPTraffic(community, ip, port):
     while True:
-        total_input_traffic = int(nt.getInputUDPTraffic(community, ip, port))
+        try:
+            total_input_traffic = int(nt.getInputUDPTraffic(community, ip, port))
+        except ValueError:
+            total_input_traffic = 0
         total_output_traffic = int(nt.getOutputUDPTraffic(community, ip, port))
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(udp_db, value)

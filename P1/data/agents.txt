@@ -1,2 +1,3 @@
 192.168.1.67 gr_4cm2 v2c SNMP 161 UP
-192.168.0.16 gr_4cm2 v2c SNMP 161 UP
+192.168.0.16 gr_4cm2 v2c SNMP 161 UP10.100.78.13 gr_4cm2 v2c 161 snmp up
+10.100.78.13 gr_4cm2 v2c 161 snmp up

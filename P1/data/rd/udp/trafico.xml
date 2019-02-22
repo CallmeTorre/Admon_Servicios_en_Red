@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE rrd SYSTEM "http://oss.oetiker.ch/rrdtool/rrdtool.dtd">
+<!-- Round Robin Database Dump -->
+<rrd>
+	<version>0003</version>
+	<step>10</step> <!-- Seconds -->
+	<lastupdate>1550864469</lastupdate> <!-- 2019-02-22 13:41:09 CST -->
+
+	<ds>
+		<name> inoctets </name>
+		<type> COUNTER </type>
+		<minimal_heartbeat>60</minimal_heartbeat>
+		<min>NaN</min>
+		<max>NaN</max>
+
+		<!-- PDP Status -->
+		<last_ds>0</last_ds>
+		<value>0.0000000000e+00</value>
+		<unknown_sec> 0 </unknown_sec>
+	</ds>
+
+	<ds>
+		<name> outoctets </name>
+		<type> COUNTER </type>
+		<minimal_heartbeat>60</minimal_heartbeat>
+		<min>NaN</min>
+		<max>NaN</max>
+
+		<!-- PDP Status -->
+		<last_ds>28196</last_ds>
+		<value>1.1200000000e+02</value>
+		<unknown_sec> 0 </unknown_sec>
+	</ds>
+
+	<!-- Round Robin Archives -->
+	<rra>
+		<cf>AVERAGE</cf>
+		<pdp_per_row>6</pdp_per_row> <!-- 60 seconds -->
+
+		<params>
+		<xff>5.0000000000e-01</xff>
+		</params>
+		<cdp_prep>
+			<ds>
+			<primary_value>0.0000000000e+00</primary_value>
+			<secondary_value>0.0000000000e+00</secondary_value>
+			<value>0.0000000000e+00</value>
+			<unknown_datapoints>0</unknown_datapoints>
+			</ds>
+			<ds>
+			<primary_value>9.5376261716e+00</primary_value>
+			<secondary_value>1.0000000000e+01</secondary_value>
+			<value>0.0000000000e+00</value>
+			<unknown_datapoints>0</unknown_datapoints>
+			</ds>
+		</cdp_prep>
+		<database>
+			<!-- 2019-02-22 13:32:00 CST / 1550863920 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-22 13:33:00 CST / 1550863980 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-22 13:34:00 CST / 1550864040 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-22 13:35:00 CST / 1550864100 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-22 13:36:00 CST / 1550864160 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-22 13:37:00 CST / 1550864220 --> <row><v>0.0000000000e+00</v><v>9.7666666667e+00</v></row>
+			<!-- 2019-02-22 13:38:00 CST / 1550864280 --> <row><v>0.0000000000e+00</v><v>1.4183333333e+01</v></row>
+			<!-- 2019-02-22 13:39:00 CST / 1550864340 --> <row><v>0.0000000000e+00</v><v>1.2750000000e+01</v></row>
+			<!-- 2019-02-22 13:40:00 CST / 1550864400 --> <row><v>0.0000000000e+00</v><v>9.2790404951e+00</v></row>
+			<!-- 2019-02-22 13:41:00 CST / 1550864460 --> <row><v>0.0000000000e+00</v><v>9.5376261716e+00</v></row>
+		</database>
+	</rra>
+	<rra>
+		<cf>AVERAGE</cf>
+		<pdp_per_row>1</pdp_per_row> <!-- 10 seconds -->
+
+		<params>
+		<xff>5.0000000000e-01</xff>
+		</params>
+		<cdp_prep>
+			<ds>
+			<primary_value>0.0000000000e+00</primary_value>
+			<secondary_value>0.0000000000e+00</secondary_value>
+			<value>NaN</value>
+			<unknown_datapoints>0</unknown_datapoints>
+			</ds>
+			<ds>
+			<primary_value>1.0000000000e+01</primary_value>
+			<secondary_value>0.0000000000e+00</secondary_value>
+			<value>NaN</value>
+			<unknown_datapoints>0</unknown_datapoints>
+			</ds>
+		</cdp_prep>
+		<database>
+			<!-- 2019-02-22 13:39:30 CST / 1550864370 --> <row><v>0.0000000000e+00</v><v>6.5567445993e+00</v></row>
+			<!-- 2019-02-22 13:39:40 CST / 1550864380 --> <row><v>0.0000000000e+00</v><v>1.1400000000e+01</v></row>
+			<!-- 2019-02-22 13:39:50 CST / 1550864390 --> <row><v>0.0000000000e+00</v><v>1.1000000000e+01</v></row>
+			<!-- 2019-02-22 13:40:00 CST / 1550864400 --> <row><v>0.0000000000e+00</v><v>7.5742429705e+00</v></row>
+			<!-- 2019-02-22 13:40:10 CST / 1550864410 --> <row><v>0.0000000000e+00</v><v>9.1257570295e+00</v></row>
+			<!-- 2019-02-22 13:40:20 CST / 1550864420 --> <row><v>0.0000000000e+00</v><v>1.1200000000e+01</v></row>
+			<!-- 2019-02-22 13:40:30 CST / 1550864430 --> <row><v>0.0000000000e+00</v><v>9.6644762823e+00</v></row>
+			<!-- 2019-02-22 13:40:40 CST / 1550864440 --> <row><v>0.0000000000e+00</v><v>7.0681796502e+00</v></row>
+			<!-- 2019-02-22 13:40:50 CST / 1550864450 --> <row><v>0.0000000000e+00</v><v>1.0167344067e+01</v></row>
+			<!-- 2019-02-22 13:41:00 CST / 1550864460 --> <row><v>0.0000000000e+00</v><v>1.0000000000e+01</v></row>
+		</database>
+	</rra>
+</rrd>
