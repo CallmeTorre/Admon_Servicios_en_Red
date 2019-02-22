@@ -17,7 +17,10 @@ def getAgents():
     agents = []
     with open(agents_db) as file:
         for agent in file:
-            agents.append(agent.split(' '))
+            info = agent.split(' ')
+            if not nt.hasConexion(info[0]):
+                info[-1] = 'DOWN'
+            agents.append(info)
     return agents
 
 def addAgent(agent):

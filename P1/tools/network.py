@@ -1,3 +1,4 @@
+import subprocess, platform
 from pysnmp.hlapi import *
 from tools.constants import OIDPREFIX, OID
 
@@ -92,4 +93,8 @@ def getUpTime(communityName, ip, port):
     return time
 
 def hasConexion(host):
-    return not bool(os.system("ping -c 1 " + host))
+    try:
+        output = subprocess.check_output("ping -{} 1 {}".format('n' if platform.system().lower()=="windows" else 'c', host), shell=True)
+    except Exception:
+        return False
+    return True

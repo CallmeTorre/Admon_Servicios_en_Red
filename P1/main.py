@@ -11,7 +11,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 class Application:
     def __init__(self, master):
         self.master = master
-        self.general_info = ['hostname','community','version', 'port', 'protocol', 'status']
+        self.general_info = ['hostname','community','version', 'protocol', 'port', 'status']
         self.createWidgets()
 
     def createWidgets(self):
@@ -69,16 +69,13 @@ class Application:
         computer = i.getAgentName(self.community,self.ip,self.port)
         time = i.getAgentUptime(self.community,self.ip,self.port)
 
-        ttk.Label(self.information_frame,text="SO :" + system).grid(row=1)
-        ttk.Label(self.information_frame,text="Address :" + adress).grid(row=2)
-        ttk.Label(self.information_frame,text="Computer :" + computer).grid(row=3)
-        ttk.Label(self.information_frame,text="Time :" + time).grid(row=4)
+        ttk.Label(self.information_frame,text="SO: " + system).grid(row=1)
+        ttk.Label(self.information_frame,text="Address:" + adress).grid(row=2)
+        ttk.Label(self.information_frame,text="Computer: " + computer).grid(row=3)
+        ttk.Label(self.information_frame,text="Time: " + time).grid(row=4)
 
     def fillGraphTab(self):
         i.generateAllTraffic(self.community, self.ip, self.port)
-        #i.generateTCPTraffic(self.community, self.ip, self.port)
-        #i.generateSNMPTraffic(self.community, self.ip, self.port)
-        #i.generateICMPTraffic(self.community, self.ip, self.port)
         thr.Thread(target=self.update_graphs).start()
 
     #TODO Refactor this method
@@ -111,7 +108,7 @@ class Application:
         for old_value in self.treeview.get_children():
             self.treeview.delete(old_value)
         for info in i.getAgents():
-            self.treeview.insert('', 'end', text=info[0], values=(info[1], info[2], info[3], info[4], 'up'))
+            self.treeview.insert('', 'end', text=info[0], values=(info[1], info[2], info[3], info[4], info[5]))
 
     def addAgentPanel(self):
         entries = []
@@ -125,7 +122,7 @@ class Application:
         tk.Button(self.new_agent_window, text="Add", width=10, command=lambda: self.getEntriesAgentPanel(entries)).grid(row=5, column=0)
 
     def getEntriesAgentPanel(self, entries):
-        i.addAgent(" ".join(str(entry.get()) for entry in entries) + ' up')
+        i.addAgent(" ".join(str(entry.get()) for entry in entries) + ' UP')
         self.updateValuesIntoTreeView()
         self.new_agent_window.destroy()
 
