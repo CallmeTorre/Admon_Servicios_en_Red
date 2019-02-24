@@ -61,6 +61,22 @@ def getName(communityName, ip, port):
 def getOS(communityName, ip, port):
     return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.OS.value)
 
+def getInterfaces(communityName, ip, port):
+  interfaces = []
+  for elem in range(1,15):
+    interfaces.append((
+      getSnmpInfo(
+        communityName, 
+        ip, 
+        port, 
+        OIDPREFIX + OID.Interfaces.value + "." + str(elem)),
+      getSnmpInfo(
+        communityName, 
+        ip, 
+        port, 
+        OIDPREFIX + OID.InterfaceStatus.value + "." + str(elem))))
+  return interfaces
+
 def getProcesses(communityName, ip, port):
     return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.Processes.value)
 

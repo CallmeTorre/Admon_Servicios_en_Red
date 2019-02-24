@@ -19,3 +19,5 @@ class OID(Enum):
     OS = '.1.1.0'
     Processes = '.25.1.6.0'
     DateAndTime = '.25.1.2.0'
+    Interfaces = '.2.2.1.2'
+    InterfaceStatus = '.2.2.1.8'

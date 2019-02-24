@@ -49,6 +49,9 @@ def getAgentName(community, ip, port):
 def getAgentUptime(community, ip, port):
     return nt.getUpTime(community, ip, port)
 
+def getAgentInterfaces(community, ip, port):
+    return nt.getInterfaces(community, ip, port)
+
 def generateAllTraffic(community, ip, port):
     rrdt.createRRDDatabase(tcp_db)
     rrdt.createRRDDatabase(snmp_db)

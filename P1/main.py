@@ -6,6 +6,7 @@ import information as i
 import threading as thr
 from tkinter import ttk
 from PIL import ImageTk, ImageFile
+from tools.utils import _loadPhoto
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class Application:
@@ -68,11 +69,29 @@ class Application:
         adress = i.getAgentLocation(self.community,self.ip,self.port)
         computer = i.getAgentName(self.community,self.ip,self.port)
         time = i.getAgentUptime(self.community,self.ip,self.port)
-
+        interfaces = i.getAgentInterfaces(self.community,self.ip,self.port)
+        #photo = _loadPhoto(system)
         ttk.Label(self.information_frame,text="SO: " + system).grid(row=1)
         ttk.Label(self.information_frame,text="Address:" + adress).grid(row=2)
         ttk.Label(self.information_frame,text="Computer: " + computer).grid(row=3)
         ttk.Label(self.information_frame,text="Time: " + time).grid(row=4)
+        treeview = ttk.Treeview(self.information_frame)
+        treeview['columns'] = ['status']
+        treeview.heading("#0", text = "Interface", anchor='w')
+        treeview.column("#0",  width = 170, anchor='w')
+        treeview.heading('status', text = "Status", anchor='w')
+        treeview.column('status',  width = 170, anchor='w')
+        treeview.grid(row=0, column=0, columnspan=2)
+        for interface, status in interfaces:
+            if status == "1":
+                status = "UP"
+            elIF status == "2":
+                status = "DOWN"
+            treeview.insert('', 'end', text=interface, values=(status))
+        #ttk.Label(self.information_frame,text="Status: " + status).grid(row=5)
+        #ttk.Label(self.information_frame, image=photo).grid(row=6)
+
+
 
     def fillGraphTab(self):
         i.generateAllTraffic(self.community, self.ip, self.port)
