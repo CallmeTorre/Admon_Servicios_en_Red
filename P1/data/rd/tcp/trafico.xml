@@ -4,7 +4,7 @@
 <rrd>
 	<version>0003</version>
 	<step>10</step> <!-- Seconds -->
-	<lastupdate>1550866582</lastupdate> <!-- 2019-02-22 14:16:22 CST -->
+	<lastupdate>1551055536</lastupdate> <!-- 2019-02-24 18:45:36 CST -->
 
 	<ds>
 		<name> inoctets </name>
@@ -14,8 +14,8 @@
 		<max>NaN</max>
 
 		<!-- PDP Status -->
-		<last_ds>396468</last_ds>
-		<value>6.0487525442e+01</value>
+		<last_ds>7656</last_ds>
+		<value>0.0000000000e+00</value>
 		<unknown_sec> 0 </unknown_sec>
 	</ds>
 
@@ -27,8 +27,8 @@
 		<max>NaN</max>
 
 		<!-- PDP Status -->
-		<last_ds>159084</last_ds>
-		<value>2.6043240121e+01</value>
+		<last_ds>7452</last_ds>
+		<value>0.0000000000e+00</value>
 		<unknown_sec> 0 </unknown_sec>
 	</ds>
 
@@ -42,29 +42,29 @@
 		</params>
 		<cdp_prep>
 			<ds>
-			<primary_value>1.4121085356e+02</primary_value>
-			<secondary_value>1.4943188155e+02</secondary_value>
-			<value>1.6659766241e+02</value>
+			<primary_value>5.3914254613e+01</primary_value>
+			<secondary_value>6.8552768062e-01</secondary_value>
+			<value>1.4472319376e-02</value>
 			<unknown_datapoints>0</unknown_datapoints>
 			</ds>
 			<ds>
-			<primary_value>3.3479214326e+01</primary_value>
-			<secondary_value>4.7242583320e+01</secondary_value>
-			<value>4.7805290337e+01</value>
+			<primary_value>4.9012876297e+01</primary_value>
+			<secondary_value>1.0772577838e+00</secondary_value>
+			<value>2.2742216163e-02</value>
 			<unknown_datapoints>0</unknown_datapoints>
 			</ds>
 		</cdp_prep>
 		<database>
-			<!-- 2019-02-22 14:07:00 CST / 1550866020 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:08:00 CST / 1550866080 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:09:00 CST / 1550866140 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:10:00 CST / 1550866200 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:11:00 CST / 1550866260 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:12:00 CST / 1550866320 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:13:00 CST / 1550866380 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:14:00 CST / 1550866440 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:15:00 CST / 1550866500 --> <row><v>NaN</v><v>NaN</v></row>
-			<!-- 2019-02-22 14:16:00 CST / 1550866560 --> <row><v>1.4121085356e+02</v><v>3.3479214326e+01</v></row>
+			<!-- 2019-02-24 18:36:00 CST / 1551054960 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:37:00 CST / 1551055020 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:38:00 CST / 1551055080 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:39:00 CST / 1551055140 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:40:00 CST / 1551055200 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:41:00 CST / 1551055260 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:42:00 CST / 1551055320 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:43:00 CST / 1551055380 --> <row><v>NaN</v><v>NaN</v></row>
+			<!-- 2019-02-24 18:44:00 CST / 1551055440 --> <row><v>3.0000000000e-01</v><v>3.6666666667e-01</v></row>
+			<!-- 2019-02-24 18:45:00 CST / 1551055500 --> <row><v>5.3914254613e+01</v><v>4.9012876297e+01</v></row>
 		</database>
 	</rra>
 	<rra>
@@ -76,29 +76,29 @@
 		</params>
 		<cdp_prep>
 			<ds>
-			<primary_value>4.5515791884e+01</primary_value>
+			<primary_value>0.0000000000e+00</primary_value>
 			<secondary_value>0.0000000000e+00</secondary_value>
 			<value>NaN</value>
 			<unknown_datapoints>0</unknown_datapoints>
 			</ds>
 			<ds>
-			<primary_value>1.1920100387e+01</primary_value>
+			<primary_value>0.0000000000e+00</primary_value>
 			<secondary_value>0.0000000000e+00</secondary_value>
 			<value>NaN</value>
 			<unknown_datapoints>0</unknown_datapoints>
 			</ds>
 		</cdp_prep>
 		<database>
-			<!-- 2019-02-22 14:14:50 CST / 1550866490 --> <row><v>1.2059643960e+02</v><v>2.7282362069e+01</v></row>
-			<!-- 2019-02-22 14:15:00 CST / 1550866500 --> <row><v>1.2635159742e+02</v><v>2.7900340712e+01</v></row>
-			<!-- 2019-02-22 14:15:10 CST / 1550866510 --> <row><v>1.8464274676e+02</v><v>4.0192775293e+01</v></row>
-			<!-- 2019-02-22 14:15:20 CST / 1550866520 --> <row><v>1.4095018060e+02</v><v>3.0783965798e+01</v></row>
-			<!-- 2019-02-22 14:15:30 CST / 1550866530 --> <row><v>9.8558695926e+01</v><v>2.1585362762e+01</v></row>
-			<!-- 2019-02-22 14:15:40 CST / 1550866540 --> <row><v>1.1777707187e+02</v><v>2.5971724849e+01</v></row>
-			<!-- 2019-02-22 14:15:50 CST / 1550866550 --> <row><v>1.5590454463e+02</v><v>3.5098873934e+01</v></row>
-			<!-- 2019-02-22 14:16:00 CST / 1550866560 --> <row><v>1.4943188155e+02</v><v>4.7242583320e+01</v></row>
-			<!-- 2019-02-22 14:16:10 CST / 1550866570 --> <row><v>1.2108187052e+02</v><v>3.5885189950e+01</v></row>
-			<!-- 2019-02-22 14:16:20 CST / 1550866580 --> <row><v>4.5515791884e+01</v><v>1.1920100387e+01</v></row>
+			<!-- 2019-02-24 18:44:00 CST / 1551055440 --> <row><v>0.0000000000e+00</v><v>0.0000000000e+00</v></row>
+			<!-- 2019-02-24 18:44:10 CST / 1551055450 --> <row><v>2.5065224585e+02</v><v>2.5060000000e+02</v></row>
+			<!-- 2019-02-24 18:44:20 CST / 1551055460 --> <row><v>6.4866846897e+01</v><v>3.9324113644e+01</v></row>
+			<!-- 2019-02-24 18:44:30 CST / 1551055470 --> <row><v>6.4809072478e+00</v><v>1.9758863560e+00</v></row>
+			<!-- 2019-02-24 18:44:40 CST / 1551055480 --> <row><v>4.5423358266e-01</v><v>6.2457117616e-01</v></row>
+			<!-- 2019-02-24 18:44:50 CST / 1551055490 --> <row><v>3.4576641734e-01</v><v>4.7542882384e-01</v></row>
+			<!-- 2019-02-24 18:45:00 CST / 1551055500 --> <row><v>6.8552768062e-01</v><v>1.0772577838e+00</v></row>
+			<!-- 2019-02-24 18:45:10 CST / 1551055510 --> <row><v>1.4472319376e-02</v><v>2.2742216163e-02</v></row>
+			<!-- 2019-02-24 18:45:20 CST / 1551055520 --> <row><v>0.0000000000e+00</v><v>0.0000000000e+00</v></row>
+			<!-- 2019-02-24 18:45:30 CST / 1551055530 --> <row><v>0.0000000000e+00</v><v>0.0000000000e+00</v></row>
 		</database>
 	</rra>
 </rrd>
