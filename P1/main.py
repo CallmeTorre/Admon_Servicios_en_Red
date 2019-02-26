@@ -64,6 +64,7 @@ class Application:
         self.ip = self.treeview.item(selected_item,"text")
         data = self.treeview.item(selected_item,"values")
         self.community, self.port = data[0], data[3]
+        self.information_frame.grid_columnconfigure(0, weight=1)
 
         system = i.getAgentOS(self.community,self.ip,self.port)
         adress = i.getAgentLocation(self.community,self.ip,self.port)
@@ -75,14 +76,16 @@ class Application:
         ttk.Label(self.information_frame,text="Address:" + adress).grid(row=2)
         ttk.Label(self.information_frame,text="Computer: " + computer).grid(row=3)
         ttk.Label(self.information_frame,text="Time: " + time).grid(row=4)
-        ttk.Label(self.information_frame, image=photo).grid(row=5)
+        so_image = ttk.Label(self.information_frame, image=photo)
+        so_image.image = photo
+        so_image.grid(row=5)
         treeview = ttk.Treeview(self.information_frame)
         treeview['columns'] = ['status']
         treeview.heading("#0", text = "Interface", anchor='w')
         treeview.column("#0",  width = 170, anchor='w')
         treeview.heading('status', text = "Status", anchor='w')
         treeview.column('status',  width = 170, anchor='w')
-        treeview.grid(row=0, column=0, columnspan=2)
+        treeview.grid(row=0, column=0)
         for interface, status in interfaces:
             if status == "1":
                 status = "UP"
@@ -92,7 +95,7 @@ class Application:
 
     def fillGraphTab(self):
         i.generateAllTraffic(self.community, self.ip, self.port)
-        thr.Thread(target=self.update_graphs).start()
+        thr.Thread(target=self.update_graphs, daemon=True).start()
 
     #TODO Refactor this method
     def update_graphs(self):

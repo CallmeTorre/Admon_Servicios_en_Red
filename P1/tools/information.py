@@ -58,12 +58,12 @@ def generateAllTraffic(community, ip, port):
     rrdt.createRRDDatabase(icmp_db)
     rrdt.createRRDDatabase(udp_db)
     rrdt.createRRDDatabase(traffic_db)
-    thr.Thread(target=__generateTCPTraffic, args=(community, ip, port)).start()
-    thr.Thread(target=__generateSNMPTraffic, args=(community, ip, port)).start()
-    thr.Thread(target=__generateICMPTraffic, args=(community, ip, port)).start()
-    thr.Thread(target=__generateUDPTraffic, args=(community, ip, port)).start()
-    thr.Thread(target=__generateTraffic, args=(community, ip, port)).start()
-    thr.Thread(target=__generateAllImages).start()
+    thr.Thread(target=__generateTCPTraffic, args=(community, ip, port), daemon=True).start()
+    thr.Thread(target=__generateSNMPTraffic, args=(community, ip, port), daemon=True).start()
+    thr.Thread(target=__generateICMPTraffic, args=(community, ip, port), daemon=True).start()
+    thr.Thread(target=__generateUDPTraffic, args=(community, ip, port), daemon=True).start()
+    thr.Thread(target=__generateTraffic, args=(community, ip, port), daemon=True).start()
+    thr.Thread(target=__generateAllImages, daemon=True).start()
 
 def __generateTCPTraffic(community, ip, port):
     total_input_traffic = 0
