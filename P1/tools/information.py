@@ -70,24 +70,42 @@ def __generateTCPTraffic(community, ip, port):
     total_output_traffic = 0
 
     while True:
-        total_input_traffic = int(nt.getInputTCPTraffic(community, ip, port))
-        total_output_traffic = int(nt.getOutputTCPTraffic(community, ip, port))
+        try:
+            total_input_traffic = int(nt.getInputTCPTraffic(community, ip, port))
+        except ValueError:
+            total_input_traffic = 0
+        try:
+            total_output_traffic = int(nt.getOutputTCPTraffic(community, ip, port))
+        except ValueError:
+            total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(tcp_db, value)
         time.sleep(5)
 
 def __generateSNMPTraffic(community, ip, port):
     while True:
-        total_input_traffic = int(nt.getInputSNMPTraffic(community, ip, port))
-        total_output_traffic = int(nt.getOutputSNMPTraffic(community, ip, port))
+        try:
+            total_input_traffic = int(nt.getInputSNMPTraffic(community, ip, port))
+        except ValueError:
+            total_input_traffic = 0
+        try:
+            total_output_traffic = int(nt.getOutputSNMPTraffic(community, ip, port))
+        except ValueError:
+            total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(snmp_db, value)
         time.sleep(1)
 
 def __generateICMPTraffic(community, ip, port):
     while True:
-        total_input_traffic = int(nt.getInputICMPTraffic(community, ip, port))
-        total_output_traffic = int(nt.getOutputICMPTraffic(community, ip, port))
+        try:
+            total_input_traffic = int(nt.getInputICMPTraffic(community, ip, port))
+        except ValueError:
+            total_input_traffic = 0
+        try:
+            total_output_traffic = int(nt.getOutputICMPTraffic(community, ip, port))
+        except ValueError:
+            total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(icmp_db, value)
         time.sleep(1)
@@ -98,15 +116,24 @@ def __generateUDPTraffic(community, ip, port):
             total_input_traffic = int(nt.getInputUDPTraffic(community, ip, port))
         except ValueError:
             total_input_traffic = 0
-        total_output_traffic = int(nt.getOutputUDPTraffic(community, ip, port))
+        try:
+            total_output_traffic = int(nt.getOutputUDPTraffic(community, ip, port))
+        except ValueError:
+            total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(udp_db, value)
         time.sleep(1)
 
 def __generateTraffic(community, ip, port):
     while True:
-        total_input_traffic = int(nt.getInputTraffic(community, ip, port))
-        total_output_traffic = int(nt.getOutputTraffic(community, ip, port))
+        try:
+            total_input_traffic = int(nt.getInputTraffic(community, ip, port))
+        except ValueError:
+            total_input_traffic = 0
+        try:
+            total_output_traffic = int(nt.getOutputTraffic(community, ip, port))
+        except ValueError:
+            total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
         rrdt.updateAndDumpRRDDatabase(traffic_db, value)
         time.sleep(1)

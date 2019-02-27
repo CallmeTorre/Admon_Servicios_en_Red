@@ -2,7 +2,7 @@ import subprocess, platform
 from pysnmp.hlapi import *
 from tools.constants import OIDPREFIX, OID
 
-def getSnmpInfo(communityName, ip, port, oid):
+def getSnmpInfo(communityName, ip, port, oid, is_complete=False):
     result = ""
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd( SnmpEngine(),
@@ -17,9 +17,14 @@ def getSnmpInfo(communityName, ip, port, oid):
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
       result = ""
-      for varBind in varBinds:
-        varB=(' = '.join([x.prettyPrint() for x in varBind]))
-        result= varB.split()[2]
+      if is_complete:
+        for varBind in varBinds:
+          result += (' = '.join([x.prettyPrint() for x in varBind]))
+        result = result.split("=")[1]
+      else:
+        for varBind in varBinds:
+          varB=(' = '.join([x.prettyPrint() for x in varBind]))
+          result= varB.split()[2]
     return result
 
 def getInputTCPTraffic(communityName, ip, port):
@@ -59,22 +64,24 @@ def getName(communityName, ip, port):
     return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.Name.value)
 
 def getOS(communityName, ip, port):
-    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.OS.value)
+    return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.OS.value, is_complete=True)
 
 def getInterfaces(communityName, ip, port):
   interfaces = []
   for elem in range(1,15):
-    interfaces.append((
-      getSnmpInfo(
-        communityName, 
-        ip, 
-        port, 
-        OIDPREFIX + OID.Interfaces.value + "." + str(elem)),
-      getSnmpInfo(
-        communityName, 
-        ip, 
-        port, 
-        OIDPREFIX + OID.InterfaceStatus.value + "." + str(elem))))
+    interface = getSnmpInfo(
+                              communityName,
+                              ip,
+                              port,
+                              OIDPREFIX + OID.Interfaces.value + "." + str(elem))
+    interface_status = getSnmpInfo(
+                                    communityName,
+                                    ip,
+                                    port,
+                                    OIDPREFIX + OID.InterfaceStatus.value + "." + str(elem))
+    if interface == 'No' or interface_status == 'No':
+      continue
+    interfaces.append((interface,interface_status))
   return interfaces
 
 def getProcesses(communityName, ip, port):

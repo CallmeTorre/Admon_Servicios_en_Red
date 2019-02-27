@@ -89,7 +89,7 @@ class Application:
         for interface, status in interfaces:
             if status == "1":
                 status = "UP"
-            elif status == "2":
+            else:
                 status = "DOWN"
             treeview.insert('', 'end', text=interface, values=(status))
 
