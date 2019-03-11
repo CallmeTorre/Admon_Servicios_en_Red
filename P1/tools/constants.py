@@ -21,3 +21,4 @@ class OID(Enum):
     DateAndTime = '.25.1.2.0'
     Interfaces = '.2.2.1.2'
     InterfaceStatus = '.2.2.1.8'
+    UnixCPU = '.25.3.3.1.2.196608'

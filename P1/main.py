@@ -42,6 +42,32 @@ class Application:
     def enableDelete(self, event):
         self.delete_agent['state'] = 'normal'
 
+    def addAgentPanel(self):
+        entries = []
+        self.new_agent_window = tk.Toplevel(self.master)
+        self.new_agent_window.title("Agregar dispositivo")
+        for i, elem in enumerate(self.general_info[:len(self.general_info) -1]):
+            tk.Label(self.new_agent_window, text=elem).grid(row=i)
+            entry = tk.Entry(self.new_agent_window, text='', width=40)
+            entries.append(entry)
+            entry.grid(row=i, column=1)
+        tk.Button(self.new_agent_window, text="Add", width=10, command=lambda: self.getEntriesAgentPanel(entries)).grid(row=5, column=0)
+
+    def getEntriesAgentPanel(self, entries):
+        i.addAgent(" ".join(str(entry.get()) for entry in entries) + ' UP')
+        self.updateValuesIntoTreeView()
+        self.new_agent_window.destroy()
+
+    def deleteAgentTreeview(self):
+        i.deleteAgent(self.treeview.item(self.treeview.selection()[0], "text"))
+        self.updateValuesIntoTreeView()
+
+    def updateValuesIntoTreeView(self):
+        for old_value in self.treeview.get_children():
+            self.treeview.delete(old_value)
+        for info in i.getAgents():
+            self.treeview.insert('', 'end', text=info[0], values=(info[1], info[2], info[3], info[4], info[5]))
+
     def deviceInformationPanel(self, event):
         self.agent_information_window = tk.Toplevel(self.master)
         self.agent_information_window.title("Agent")
@@ -50,16 +76,16 @@ class Application:
         self.createTabsInformationPanel()
         self.fillInformationTab()
         self.fillGraphTab()
-        #self.fillResourcesTab()
+        self.fillResourcesTab()
 
     def createTabsInformationPanel(self):
         self.information_frame = ttk.Frame(self.agent_ntb)
         self.graphs_frame = ttk.Frame(self.agent_ntb)
-        self.resources_frame = ttk.Frame(self.agent_ntb)
+        self.graphs_resources_frame = ttk.Frame(self.agent_ntb)
 
         self.agent_ntb.add(self.information_frame, text="Information")
         self.agent_ntb.add(self.graphs_frame, text="Graphs")
-        self.agent_ntb.add(self.resources_frame, text="Resources")
+        self.agent_ntb.add(self.graphs_resources_frame, text="Resources")
         self.agent_ntb.select(self.information_frame)
         self.agent_ntb.enable_traversal()
 
@@ -98,12 +124,11 @@ class Application:
             treeview.insert('', 'end', text=interface, values=(status))
 
     def fillGraphTab(self):
-        #pass
         i.generateAllTraffic(self.community, self.ip, self.port)
-        thr.Thread(target=self.update_graphs, daemon=True).start()
+        thr.Thread(target=self.updateTrafficGraphs, daemon=True).start()
 
     #TODO Refactor this method
-    def update_graphs(self):
+    def updateTrafficGraphs(self):
         while True:
             for widget in self.graphs_frame.winfo_children():
                 widget.destroy()
@@ -126,32 +151,18 @@ class Application:
             lbTrafico5.grid(row=2, column=0)
             time.sleep(30)
 
-    def updateValuesIntoTreeView(self):
-        for old_value in self.treeview.get_children():
-            self.treeview.delete(old_value)
-        for info in i.getAgents():
-            self.treeview.insert('', 'end', text=info[0], values=(info[1], info[2], info[3], info[4], info[5]))
+    def fillResourcesTab(self):
+        i.generateAllPredictions(self.community, self.ip, self.port)
+        thr.Thread(target=self.updateResourcesGraphs, daemon=True).start()
 
-    def addAgentPanel(self):
-        entries = []
-        self.new_agent_window = tk.Toplevel(self.master)
-        self.new_agent_window.title("Agregar dispositivo")
-        for i, elem in enumerate(self.general_info[:len(self.general_info) -1]):
-            tk.Label(self.new_agent_window, text=elem).grid(row=i)
-            entry = tk.Entry(self.new_agent_window, text='', width=40)
-            entries.append(entry)
-            entry.grid(row=i, column=1)
-        tk.Button(self.new_agent_window, text="Add", width=10, command=lambda: self.getEntriesAgentPanel(entries)).grid(row=5, column=0)
-
-    def getEntriesAgentPanel(self, entries):
-        i.addAgent(" ".join(str(entry.get()) for entry in entries) + ' UP')
-        self.updateValuesIntoTreeView()
-        self.new_agent_window.destroy()
-
-    def deleteAgentTreeview(self):
-        i.deleteAgent(self.treeview.item(self.treeview.selection()[0], "text"))
-        self.updateValuesIntoTreeView()
-
+    def updateResourcesGraphs(self):
+        while True:
+            for widget in self.graphs_resources_frame.winfo_children():
+                widget.destroy()
+            photo = ImageTk.PhotoImage(file ="./data/rd/cpu/trafico.png")
+            lbTrafico = ttk.Label(self.graphs_resources_frame,image=photo, text="Grafica1")
+            lbTrafico.grid(row=0, column=0)
+            time.sleep(30)
 
 master = tk.Tk()
 app = Application(master)

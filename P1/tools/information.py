@@ -12,6 +12,7 @@ snmp_db = './data/rd/snmp'
 icmp_db = './data/rd/icmp'
 udp_db = './data/rd/udp'
 traffic_db = './data/rd/traffic'
+cpu_db = './data/rd/cpu'
 
 def getAgents():
     agents = []
@@ -90,4 +91,25 @@ def __generateAllImages():
         rrdt.createRRDImage(icmp_db, current_time, "Equipo 12 icmp")
         rrdt.createRRDImage(udp_db, current_time, "Equipo 12 udp")
         rrdt.createRRDImage(traffic_db, current_time, "Equipo 12 traffic")
+        time.sleep(30)
+
+def generateAllPredictions(community, ip, port):
+    rrdt.createPredictionDatabase(cpu_db)
+    thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixCPU', cpu_db), daemon=True).start()
+    thr.Thread(target=__generateCPUImage, daemon=True).start()
+
+def __generateGeneral(community, ip, port, method, db):
+    while True:
+        try:
+            cpu_load = int(getattr(nt,method)(community, ip, port))
+        except ValueError:
+            cpu_load = 0
+        value = "N:" + str(cpu_load)
+        rrdt.updateAndDumpRRDDatabase(db, value)
+        time.sleep(1)
+
+def __generateCPUImage():
+    current_time = str(int(time.time()))
+    while True:
+        rrdt.createRRDCPUImage(cpu_db, current_time)
         time.sleep(30)
