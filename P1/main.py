@@ -50,12 +50,16 @@ class Application:
         self.createTabsInformationPanel()
         self.fillInformationTab()
         self.fillGraphTab()
+        #self.fillResourcesTab()
 
     def createTabsInformationPanel(self):
         self.information_frame = ttk.Frame(self.agent_ntb)
-        self.agent_ntb.add(self.information_frame, text="Information")
         self.graphs_frame = ttk.Frame(self.agent_ntb)
+        self.resources_frame = ttk.Frame(self.agent_ntb)
+
+        self.agent_ntb.add(self.information_frame, text="Information")
         self.agent_ntb.add(self.graphs_frame, text="Graphs")
+        self.agent_ntb.add(self.resources_frame, text="Resources")
         self.agent_ntb.select(self.information_frame)
         self.agent_ntb.enable_traversal()
 
@@ -94,6 +98,7 @@ class Application:
             treeview.insert('', 'end', text=interface, values=(status))
 
     def fillGraphTab(self):
+        #pass
         i.generateAllTraffic(self.community, self.ip, self.port)
         thr.Thread(target=self.update_graphs, daemon=True).start()
 
@@ -119,9 +124,7 @@ class Application:
             lbTrafico3.grid(row=1, column=0)
             lbTrafico4.grid(row=1, column=1)
             lbTrafico5.grid(row=2, column=0)
-
             time.sleep(30)
-
 
     def updateValuesIntoTreeView(self):
         for old_value in self.treeview.get_children():
