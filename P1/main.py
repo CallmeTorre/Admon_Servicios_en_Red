@@ -75,7 +75,7 @@ class Application:
         self.agent_ntb.grid(row=0, column=0)
         self.createTabsInformationPanel()
         self.fillInformationTab()
-        self.fillGraphTab()
+        #self.fillGraphTab()
         self.fillResourcesTab()
 
     def createTabsInformationPanel(self):

@@ -106,10 +106,10 @@ def __generateGeneral(community, ip, port, method, db):
             cpu_load = 0
         value = "N:" + str(cpu_load)
         rrdt.updateAndDumpRRDDatabase(db, value)
-        time.sleep(1)
+        time.sleep(5)
 
 def __generateCPUImage():
     current_time = str(int(time.time()))
     while True:
         rrdt.createRRDCPUImage(cpu_db, current_time)
-        time.sleep(30)
+        time.sleep(20)

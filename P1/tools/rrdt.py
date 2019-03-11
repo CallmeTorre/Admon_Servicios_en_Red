@@ -27,7 +27,7 @@ def createRRDImage(path, initial_time, name):
                     "LINE1:outoctets#0000FF:Out Salientes\r")
 
 def createRRDCPUImage(path, initial_time):
-    rrdtool.graph(  path + "/trafico.png",
+    rg = rrdtool.graphv(  path + "/trafico.png",
                     "--start",str(initial_time),
                     "--vertical-label=Porcentaje",
                     '--lower-limit', '0',
@@ -49,9 +49,15 @@ def createRRDCPUImage(path, initial_time):
                     "HRULE:25#1a237e:Umbral 1 - 25%",
                     "HRULE:50#1b5e20:Umbral 2 - 50%",
                     "HRULE:75#ff6f00:Umbral 3 - 75%",
-                    "PRINT:cargaMAX:%6.2lf %SMAX",
-                    "PRINT:cargaMIN:%6.2lf %SMIN",
-                    "PRINT:cargaLAST:%6.2lf %SLAST" )
+                    #"PRINT:cargaMAX:%6.2lf %SMAX",
+                    #"PRINT:cargaMIN:%6.2lf %SMIN",
+                    #"PRINT:cargaLAST:%6.2lf %SLAST",
+                    "PRINT:cargaLAST:%6.2lf")
+
+    try:
+        ultimo_valor=float(rg['print[0]'])
+    except ValueError:
+        ultimo_valor = 0
 
 def updateAndDumpRRDDatabase(path, value):
     rrdtool.update(path + '/trafico.rrd', value)
