@@ -16,7 +16,6 @@ def getSnmpInfo(communityName, ip, port, oid, is_complete=False):
         print('%s at %s' % (errorStatus.prettyPrint(),
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
-      result = ""
       if is_complete:
         for varBind in varBinds:
           result += (' = '.join([x.prettyPrint() for x in varBind]))
@@ -65,6 +64,9 @@ def getName(communityName, ip, port):
 
 def getOS(communityName, ip, port):
     return getSnmpInfo(communityName,ip,port, OIDPREFIX + OID.OS.value, is_complete=True)
+
+def getUnixCPU(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UnixCPU.value)
 
 def getInterfaces(communityName, ip, port):
   interfaces = []

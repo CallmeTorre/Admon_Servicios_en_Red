@@ -12,6 +12,7 @@ snmp_db = './data/rd/snmp'
 icmp_db = './data/rd/icmp'
 udp_db = './data/rd/udp'
 traffic_db = './data/rd/traffic'
+cpu_db = './data/rd/cpu'
 
 def getAgents():
     agents = []
@@ -58,92 +59,57 @@ def generateAllTraffic(community, ip, port):
     rrdt.createRRDDatabase(icmp_db)
     rrdt.createRRDDatabase(udp_db)
     rrdt.createRRDDatabase(traffic_db)
-    thr.Thread(target=__generateTCPTraffic, args=(community, ip, port), daemon=True).start()
-    thr.Thread(target=__generateSNMPTraffic, args=(community, ip, port), daemon=True).start()
-    thr.Thread(target=__generateICMPTraffic, args=(community, ip, port), daemon=True).start()
-    thr.Thread(target=__generateUDPTraffic, args=(community, ip, port), daemon=True).start()
-    thr.Thread(target=__generateTraffic, args=(community, ip, port), daemon=True).start()
+
+    thr.Thread(target=__generateGeneralTraffic, args=(community, ip, port,'getInputTCPTraffic', 'getOutputTCPTraffic', tcp_db), daemon=True).start()
+    thr.Thread(target=__generateGeneralTraffic, args=(community, ip, port,'getInputSNMPTraffic', 'getOutputSNMPTraffic', snmp_db), daemon=True).start()
+    thr.Thread(target=__generateGeneralTraffic, args=(community, ip, port,'getInputICMPTraffic', 'getOutputICMPTraffic', icmp_db), daemon=True).start()
+    thr.Thread(target=__generateGeneralTraffic, args=(community, ip, port,'getInputUDPTraffic', 'getOutputUDPTraffic', udp_db), daemon=True).start()
+    thr.Thread(target=__generateGeneralTraffic, args=(community, ip, port,'getInputTraffic', 'getOutputTraffic', traffic_db), daemon=True).start()
     thr.Thread(target=__generateAllImages, daemon=True).start()
 
-def __generateTCPTraffic(community, ip, port):
+def __generateGeneralTraffic(community, ip, port, inputMethod, outputMethod, db):
     total_input_traffic = 0
     total_output_traffic = 0
-
     while True:
         try:
-            total_input_traffic = int(nt.getInputTCPTraffic(community, ip, port))
+            total_input_traffic = int(getattr(nt,inputMethod,)(community, ip, port))
         except ValueError:
             total_input_traffic = 0
         try:
-            total_output_traffic = int(nt.getOutputTCPTraffic(community, ip, port))
+            total_output_traffic = int(getattr(nt,outputMethod,)(community, ip, port))
         except ValueError:
             total_output_traffic = 0
         value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdt.updateAndDumpRRDDatabase(tcp_db, value)
+        rrdt.updateAndDumpRRDDatabase(db, value)
         time.sleep(5)
-
-def __generateSNMPTraffic(community, ip, port):
-    while True:
-        try:
-            total_input_traffic = int(nt.getInputSNMPTraffic(community, ip, port))
-        except ValueError:
-            total_input_traffic = 0
-        try:
-            total_output_traffic = int(nt.getOutputSNMPTraffic(community, ip, port))
-        except ValueError:
-            total_output_traffic = 0
-        value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdt.updateAndDumpRRDDatabase(snmp_db, value)
-        time.sleep(1)
-
-def __generateICMPTraffic(community, ip, port):
-    while True:
-        try:
-            total_input_traffic = int(nt.getInputICMPTraffic(community, ip, port))
-        except ValueError:
-            total_input_traffic = 0
-        try:
-            total_output_traffic = int(nt.getOutputICMPTraffic(community, ip, port))
-        except ValueError:
-            total_output_traffic = 0
-        value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdt.updateAndDumpRRDDatabase(icmp_db, value)
-        time.sleep(1)
-
-def __generateUDPTraffic(community, ip, port):
-    while True:
-        try:
-            total_input_traffic = int(nt.getInputUDPTraffic(community, ip, port))
-        except ValueError:
-            total_input_traffic = 0
-        try:
-            total_output_traffic = int(nt.getOutputUDPTraffic(community, ip, port))
-        except ValueError:
-            total_output_traffic = 0
-        value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdt.updateAndDumpRRDDatabase(udp_db, value)
-        time.sleep(1)
-
-def __generateTraffic(community, ip, port):
-    while True:
-        try:
-            total_input_traffic = int(nt.getInputTraffic(community, ip, port))
-        except ValueError:
-            total_input_traffic = 0
-        try:
-            total_output_traffic = int(nt.getOutputTraffic(community, ip, port))
-        except ValueError:
-            total_output_traffic = 0
-        value = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
-        rrdt.updateAndDumpRRDDatabase(traffic_db, value)
-        time.sleep(1)
 
 def __generateAllImages():
     current_time = str(int(time.time()))
     while True:
-        rrdt.createRRDImage(tcp_db, current_time, "tcp")
-        rrdt.createRRDImage(snmp_db, current_time, "snmp")
-        rrdt.createRRDImage(icmp_db, current_time, "icmp")
-        rrdt.createRRDImage(udp_db, current_time, "udp")
-        rrdt.createRRDImage(traffic_db, current_time, "traffic")
+        rrdt.createRRDImage(tcp_db, current_time, "Equipo 12 tcp")
+        rrdt.createRRDImage(snmp_db, current_time, "Equipo 12 snmp")
+        rrdt.createRRDImage(icmp_db, current_time, "Equipo 12 icmp")
+        rrdt.createRRDImage(udp_db, current_time, "Equipo 12 udp")
+        rrdt.createRRDImage(traffic_db, current_time, "Equipo 12 traffic")
+        time.sleep(30)
+
+def generateAllPredictions(community, ip, port):
+    rrdt.createPredictionDatabase(cpu_db)
+    thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixCPU', cpu_db), daemon=True).start()
+    thr.Thread(target=__generateCPUImage, daemon=True).start()
+
+def __generateGeneral(community, ip, port, method, db):
+    while True:
+        try:
+            cpu_load = int(getattr(nt,method)(community, ip, port))
+        except ValueError:
+            cpu_load = 0
+        value = "N:" + str(cpu_load)
+        rrdt.updateAndDumpRRDDatabase(db, value)
+        time.sleep(1)
+
+def __generateCPUImage():
+    current_time = str(int(time.time()))
+    while True:
+        rrdt.createRRDCPUImage(cpu_db, current_time)
         time.sleep(30)
