@@ -27,8 +27,10 @@ def createRRDImage(path, initial_time, name):
                     "LINE1:outoctets#0000FF:Out Salientes\r")
 
 def createRRDCPUImage(path, initial_time):
+    initial_time = int(initial_time) - 3600
     rg = rrdtool.graphv(  path + "/trafico.png",
-                    "--start",str(initial_time),
+                    "--start", str(initial_time),
+                    "--end", '+3600s',
                     "--vertical-label=Porcentaje",
                     '--lower-limit', '0',
                     '--upper-limit', '100',
@@ -36,12 +38,29 @@ def createRRDCPUImage(path, initial_time):
                     "DEF:cargaCPUl=" + path + "/trafico.rrd:CPUload:AVERAGE",
                     "DEF:cargaCPUm=" + path + "/trafico.rrd:CPUload:AVERAGE",
                     "DEF:cargaCPUh=" + path + "/trafico.rrd:CPUload:AVERAGE",
+
                     "CDEF:umbral25=cargaCPUl,25,LT,0,carga,IF",
                     "CDEF:umbral50=cargaCPUl,50,LT,0,carga,IF",
                     "CDEF:umbral75=cargaCPUl,75,LT,0,carga,IF",
+
                     "VDEF:cargaMAX=carga,MAXIMUM",
                     "VDEF:cargaMIN=carga,MINIMUM",
                     "VDEF:cargaLAST=carga,LAST",
+                    "VDEF:m=carga,LSLSLOPE",
+                    "VDEF:b=carga,LSLINT",
+                    'CDEF:predline=carga,POP,m,COUNT,*,b,+',
+                    'CDEF:maxlimit=predline,90,100,LIMIT',
+                    'CDEF:minlimit=predline,0,10,LIMIT',
+                    'VDEF:upperminpoint=maxlimit,FIRST',
+                    'VDEF:uppermaxpoint=maxlimit,LAST',
+                    'VDEF:lowerminpoint=minlimit,FIRST',
+                    'VDEF:lowermaxpoint=minlimit,LAST',
+
+                    "GPRINT:upperminpoint:Reach 100% @ %c \\n:strftime",
+                    "GPRINT:uppermaxpoint:Reach 90% @ %c \\n:strftime",
+                    "GPRINT:lowerminpoint:Reach  10% @ %c \\n:strftime",
+                    "GPRINT:lowermaxpoint:Reach 0% @ %c \\n:strftime",
+
                     "AREA:carga#3f51b5:Carga del CPU",
                     "AREA:umbral25#4caf50:Tráfico de carga mayor que 25",
                     "AREA:umbral50#ffc107:Tráfico de carga mayor que 50",
@@ -49,6 +68,13 @@ def createRRDCPUImage(path, initial_time):
                     "HRULE:25#1a237e:Umbral 1 - 25%",
                     "HRULE:50#1b5e20:Umbral 2 - 50%",
                     "HRULE:75#ff6f00:Umbral 3 - 75%",
+
+                    "LINE2:predline#ef0078:dashes=5",
+                    "AREA:maxlimit#8b00dd77",
+                    "LINE2:maxlimit#8b00dd",
+                    "AREA:minlimit#8b00dd77",
+                    "LINE2:minlimit#8b00dd",
+
                     #"PRINT:cargaMAX:%6.2lf %SMAX",
                     #"PRINT:cargaMIN:%6.2lf %SMIN",
                     #"PRINT:cargaLAST:%6.2lf %SLAST",
