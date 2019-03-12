@@ -160,8 +160,14 @@ class Application:
             for widget in self.graphs_resources_frame.winfo_children():
                 widget.destroy()
             photo = ImageTk.PhotoImage(file ="./data/rd/cpu/trafico.png")
-            lbTrafico = ttk.Label(self.graphs_resources_frame,image=photo, text="Grafica1")
-            lbTrafico.grid(row=0, column=0)
+            photo2 = ImageTk.PhotoImage(file ="./data/rd/ram/trafico.png")
+            photo3 = ImageTk.PhotoImage(file ="./data/rd/hdd/trafico.png")
+            lbPrediction = ttk.Label(self.graphs_resources_frame,image=photo, text="Grafica1")
+            lbPrediction2 = ttk.Label(self.graphs_resources_frame,image=photo2, text="Grafica2")
+            lbPrediction3 = ttk.Label(self.graphs_resources_frame,image=photo3, text="Grafica3")
+            lbPrediction.grid(row=0, column=0)
+            lbPrediction2.grid(row=0, column=1)
+            lbPrediction3.grid(row=1, column=0)
             time.sleep(30)
 
 master = tk.Tk()

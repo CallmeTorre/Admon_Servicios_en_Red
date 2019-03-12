@@ -1,6 +1,7 @@
 from enum import Enum
 
 OIDPREFIX = '1.3.6.1.2.1'
+OIDRESPREFIX = '1.3.6.1.4.1'
 
 class OID(Enum):
     TCPInputTraffic = '.6.10.0'
@@ -22,3 +23,6 @@ class OID(Enum):
     Interfaces = '.2.2.1.2'
     InterfaceStatus = '.2.2.1.8'
     UnixCPU = '.25.3.3.1.2.196608'
+    UnixTotalRAM = '.2021.4.5.0'
+    UnixFreeRAM = '.2021.4.6.0'
+    UnixPercentajeOfHDD = '.2021.9.1.9.1'

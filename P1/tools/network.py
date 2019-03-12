@@ -1,6 +1,6 @@
 import subprocess, platform
 from pysnmp.hlapi import *
-from tools.constants import OIDPREFIX, OID
+from tools.constants import OIDPREFIX, OIDRESPREFIX, OID
 
 def getSnmpInfo(communityName, ip, port, oid, is_complete=False):
     result = ""
@@ -67,6 +67,15 @@ def getOS(communityName, ip, port):
 
 def getUnixCPU(communityName, ip, port):
     return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.UnixCPU.value)
+
+def getUnixHDD(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDRESPREFIX + OID.UnixPercentajeOfHDD.value)
+
+def getUnixTotalRam(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDRESPREFIX + OID.UnixTotalRAM.value)
+
+def getUnixAvaliableRam(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDRESPREFIX + OID.UnixFreeRAM.value)
 
 def getInterfaces(communityName, ip, port):
   interfaces = []

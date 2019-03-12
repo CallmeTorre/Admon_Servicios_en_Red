@@ -13,6 +13,8 @@ icmp_db = './data/rd/icmp'
 udp_db = './data/rd/udp'
 traffic_db = './data/rd/traffic'
 cpu_db = './data/rd/cpu'
+hdd_db = './data/rd/hdd'
+ram_db = './data/rd/ram'
 
 def getAgents():
     agents = []
@@ -95,21 +97,39 @@ def __generateAllImages():
 
 def generateAllPredictions(community, ip, port):
     rrdt.createPredictionDatabase(cpu_db)
+    rrdt.createPredictionDatabase(ram_db)
+    rrdt.createPredictionDatabase(hdd_db)
     thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixCPU', cpu_db), daemon=True).start()
-    thr.Thread(target=__generateCPUImage, daemon=True).start()
+    thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixHDD', hdd_db), daemon=True).start()
+    thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixAvaliableRam', ram_db, 'getUnixTotalRam'), daemon=True).start()
+    thr.Thread(target=__generatePredictionImages, daemon=True).start()
 
-def __generateGeneral(community, ip, port, method, db):
-    while True:
+def __generateGeneral(community, ip, port, method, db, method2=None):
+    if method2:
         try:
-            cpu_load = int(getattr(nt,method)(community, ip, port))
+            snmp_total_value = int(getattr(nt,method2)(community, ip, port))
         except ValueError:
-            cpu_load = 0
-        value = "N:" + str(cpu_load)
+            snmp_total_value = 0
+    while True:
+        if method2:
+            try:
+                snmp_pre_value = snmp_total_value - int(getattr(nt,method)(community, ip, port))
+                snmp_value = (snmp_pre_value * 100) // snmp_total_value
+            except ValueError:
+                snmp_value = 0
+        else:
+            try:
+                snmp_value = int(getattr(nt,method)(community, ip, port))
+            except ValueError:
+                snmp_value = 0
+        value = "N:" + str(snmp_value)
         rrdt.updateAndDumpRRDDatabase(db, value)
         time.sleep(5)
 
-def __generateCPUImage():
+def __generatePredictionImages():
     current_time = str(int(time.time()))
     while True:
-        rrdt.createRRDCPUImage(cpu_db, current_time)
+        rrdt.createRRDPredictionImage(cpu_db, current_time, "CPU", "25", "50", "75")
+        rrdt.createRRDPredictionImage(ram_db, current_time, "RAM", "25", "50", "75")
+        rrdt.createRRDPredictionImage(hdd_db, current_time, "HDD", "25", "50", "75")
         time.sleep(20)

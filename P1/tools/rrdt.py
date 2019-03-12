@@ -85,6 +85,65 @@ def createRRDCPUImage(path, initial_time):
     except ValueError:
         ultimo_valor = 0
 
+def createRRDPredictionImage(path, initial_time, type_data, u1, u2, u3):
+    initial_time = int(initial_time) - 3600
+    rg = rrdtool.graphv(  path + "/trafico.png",
+                    "--start", str(initial_time),
+                    "--end", '+3600s',
+                    "--vertical-label=Porcentaje",
+                    '--lower-limit', '0',
+                    '--upper-limit', '100',
+                    "DEF:carga=" + path + "/trafico.rrd:CPUload:AVERAGE",
+                    "DEF:cargaCPUl=" + path + "/trafico.rrd:CPUload:AVERAGE",
+                    "DEF:cargaCPUm=" + path + "/trafico.rrd:CPUload:AVERAGE",
+                    "DEF:cargaCPUh=" + path + "/trafico.rrd:CPUload:AVERAGE",
+
+                    "CDEF:umbral25=cargaCPUl,"+ u1 +",LT,0,carga,IF",
+                    "CDEF:umbral50=cargaCPUl,"+ u2 +",LT,0,carga,IF",
+                    "CDEF:umbral75=cargaCPUl,"+ u3 +",LT,0,carga,IF",
+
+                    "VDEF:cargaMAX=carga,MAXIMUM",
+                    "VDEF:cargaMIN=carga,MINIMUM",
+                    "VDEF:cargaLAST=carga,LAST",
+                    "VDEF:m=carga,LSLSLOPE",
+                    "VDEF:b=carga,LSLINT",
+                    'CDEF:predline=carga,POP,m,COUNT,*,b,+',
+                    'CDEF:maxlimit=predline,90,100,LIMIT',
+                    'CDEF:minlimit=predline,0,10,LIMIT',
+                    'VDEF:upperminpoint=maxlimit,FIRST',
+                    'VDEF:uppermaxpoint=maxlimit,LAST',
+                    'VDEF:lowerminpoint=minlimit,FIRST',
+                    'VDEF:lowermaxpoint=minlimit,LAST',
+
+                    "GPRINT:upperminpoint:Reach 100% @ %c \\n:strftime",
+                    "GPRINT:uppermaxpoint:Reach 90% @ %c \\n:strftime",
+                    "GPRINT:lowerminpoint:Reach  10% @ %c \\n:strftime",
+                    "GPRINT:lowermaxpoint:Reach 0% @ %c \\n:strftime",
+
+                    "AREA:carga#3f51b5:Carga de " + type_data,
+                    "AREA:umbral25#4caf50:Tráfico de carga mayor que " + u1,
+                    "AREA:umbral50#ffc107:Tráfico de carga mayor que " + u2,
+                    "AREA:umbral75#f44336:Tráfico de carga mayor que " + u3,
+                    "HRULE:25#1a237e:Umbral 1 - "+ u1 +"%",
+                    "HRULE:50#1b5e20:Umbral 2 - "+ u2 +"%",
+                    "HRULE:75#ff6f00:Umbral 3 - "+ u3 +"%",
+
+                    "LINE2:predline#ef0078:dashes=5",
+                    "AREA:maxlimit#8b00dd77",
+                    "LINE2:maxlimit#8b00dd",
+                    "AREA:minlimit#8b00dd77",
+                    "LINE2:minlimit#8b00dd",
+
+                    #"PRINT:cargaMAX:%6.2lf %SMAX",
+                    #"PRINT:cargaMIN:%6.2lf %SMIN",
+                    #"PRINT:cargaLAST:%6.2lf %SLAST",
+                    "PRINT:cargaLAST:%6.2lf")
+
+    try:
+        ultimo_valor=float(rg['print[0]'])
+    except ValueError:
+        ultimo_valor = 0
+
 def updateAndDumpRRDDatabase(path, value):
     rrdtool.update(path + '/trafico.rrd', value)
     rrdtool.dump(path + '/trafico.rrd', path + '/trafico.xml')
