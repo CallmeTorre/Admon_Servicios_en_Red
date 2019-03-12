@@ -1,4 +1,5 @@
 import rrdtool
+import notify as mail
 
 def createPredictionDatabase(path):
     rrdtool.create( path + "/trafico.rrd",
@@ -133,7 +134,6 @@ def createRRDPredictionImage(path, initial_time, type_data, u1, u2, u3):
                     "LINE2:maxlimit#8b00dd",
                     "AREA:minlimit#8b00dd77",
                     "LINE2:minlimit#8b00dd",
-
                     #"PRINT:cargaMAX:%6.2lf %SMAX",
                     #"PRINT:cargaMIN:%6.2lf %SMIN",
                     #"PRINT:cargaLAST:%6.2lf %SLAST",
@@ -143,6 +143,18 @@ def createRRDPredictionImage(path, initial_time, type_data, u1, u2, u3):
         ultimo_valor=float(rg['print[0]'])
     except ValueError:
         ultimo_valor = 0
+
+    if type_data == "CPU":
+        u = None
+        if ultimo_valor >= int(u1) and ultimo_valor < int(u2):
+            u = u1
+        elif ultimo_valor >= int(u2) and ultimo_valor < int(u3):
+            u = u2
+        elif ultimo_valor >= int(u3):
+            u = u3
+
+        if u:
+            mail.asyncsend(type_data, u, path + "/trafico.png")
 
 def updateAndDumpRRDDatabase(path, value):
     rrdtool.update(path + '/trafico.rrd', value)

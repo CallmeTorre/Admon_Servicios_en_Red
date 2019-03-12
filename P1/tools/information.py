@@ -132,4 +132,4 @@ def __generatePredictionImages():
         rrdt.createRRDPredictionImage(cpu_db, current_time, "CPU", "25", "50", "75")
         rrdt.createRRDPredictionImage(ram_db, current_time, "RAM", "25", "50", "75")
         rrdt.createRRDPredictionImage(hdd_db, current_time, "HDD", "25", "50", "75")
-        time.sleep(20)
+        time.sleep(30)
