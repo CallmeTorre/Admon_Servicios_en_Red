@@ -76,16 +76,19 @@ class Application:
         self.createTabsInformationPanel()
         self.fillInformationTab()
         #self.fillGraphTab()
-        self.fillResourcesTab()
+        #self.fillResourcesTab()
+        self.fillAberrationTab()
 
     def createTabsInformationPanel(self):
         self.information_frame = ttk.Frame(self.agent_ntb)
         self.graphs_frame = ttk.Frame(self.agent_ntb)
         self.graphs_resources_frame = ttk.Frame(self.agent_ntb)
+        self.graphs_aberrations_frame = ttk.Frame(self.agent_ntb)
 
         self.agent_ntb.add(self.information_frame, text="Information")
         self.agent_ntb.add(self.graphs_frame, text="Graphs")
         self.agent_ntb.add(self.graphs_resources_frame, text="Resources")
+        self.agent_ntb.add(self.graphs_aberrations_frame, text="Aberrations")
         self.agent_ntb.select(self.information_frame)
         self.agent_ntb.enable_traversal()
 
@@ -168,6 +171,19 @@ class Application:
             lbPrediction.grid(row=0, column=0)
             lbPrediction2.grid(row=0, column=1)
             lbPrediction3.grid(row=1, column=0)
+            time.sleep(30)
+
+    def fillAberrationTab(self):
+        i.generateAllAberrations(self.community, self.ip, self.port)
+        thr.Thread(target=self.updateAberrationGraphs, daemon=True).start()
+
+    def updateAberrationGraphs(self):
+        while True:
+            for widget in self.graphs_aberrations_frame.winfo_children():
+                widget.destroy()
+            photo = ImageTk.PhotoImage(file ="./data/rd/aberration/trafico.png")
+            lbAberration = ttk.Label(self.graphs_aberrations_frame,image=photo, text="Grafica1")
+            lbAberration.grid(row=0, column=0)
             time.sleep(30)
 
 master = tk.Tk()

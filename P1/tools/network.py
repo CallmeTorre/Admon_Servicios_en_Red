@@ -77,6 +77,9 @@ def getUnixTotalRam(communityName, ip, port):
 def getUnixAvaliableRam(communityName, ip, port):
     return getSnmpInfo(communityName, ip, port, OIDRESPREFIX + OID.UnixFreeRAM.value)
 
+def getCustomOID(communityName, ip, port):
+    return getSnmpInfo(communityName, ip, port, OIDPREFIX + OID.CustomOID.value)
+
 def getInterfaces(communityName, ip, port):
   interfaces = []
   for elem in range(1,15):

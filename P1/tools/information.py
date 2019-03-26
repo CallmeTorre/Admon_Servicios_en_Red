@@ -15,6 +15,7 @@ traffic_db = './data/rd/traffic'
 cpu_db = './data/rd/cpu'
 hdd_db = './data/rd/hdd'
 ram_db = './data/rd/ram'
+abe_db = './data/rd/aberration'
 
 def getAgents():
     agents = []
@@ -104,6 +105,11 @@ def generateAllPredictions(community, ip, port):
     thr.Thread(target=__generateGeneral, args=(community, ip, port,'getUnixAvaliableRam', ram_db, 'getUnixTotalRam'), daemon=True).start()
     thr.Thread(target=__generatePredictionImages, daemon=True).start()
 
+def generateAllAberrations(community, ip, port):
+    rrdt.createAberrationDatabase(abe_db)
+    thr.Thread(target=__generateGeneral, args=(community,ip, port,'getCustomOID',abe_db), daemon=True).start()
+    thr.Thread(target=__generateAberrationImages, daemon=True).start()
+
 def __generateGeneral(community, ip, port, method, db, method2=None):
     if method2:
         try:
@@ -124,7 +130,8 @@ def __generateGeneral(community, ip, port, method, db, method2=None):
                 snmp_value = 0
         value = "N:" + str(snmp_value)
         rrdt.updateAndDumpRRDDatabase(db, value)
-        time.sleep(5)
+        #time.sleep(5)
+        time.sleep(1)
 
 def __generatePredictionImages():
     current_time = str(int(time.time()))
@@ -132,4 +139,9 @@ def __generatePredictionImages():
         rrdt.createRRDPredictionImage(cpu_db, current_time, "CPU", "25", "50", "75")
         rrdt.createRRDPredictionImage(ram_db, current_time, "RAM", "25", "50", "75")
         rrdt.createRRDPredictionImage(hdd_db, current_time, "HDD", "25", "50", "75")
+        time.sleep(30)
+
+def __generateAberrationImages():
+    while True:
+        rrdt.createAberrationImage(abe_db)
         time.sleep(30)

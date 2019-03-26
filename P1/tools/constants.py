@@ -26,3 +26,5 @@ class OID(Enum):
     UnixTotalRAM = '.2021.4.5.0'
     UnixFreeRAM = '.2021.4.6.0'
     UnixPercentajeOfHDD = '.2021.9.1.9.1'
+
+    CustomOID = '.2.2.1.10.1'
