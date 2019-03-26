@@ -172,16 +172,16 @@ def createAberrationImage(path):
     if isAberration:
         begin_aberration = 1
         if not number_of_beginning_aberrations:
-            print(f"Aberration finded at {datetime.datetime.now().time()}")
+            #print(f"Aberration finded at {datetime.datetime.now().time()}")
             number_of_beginning_aberrations += 1
-            mail.asyncsendAb(path + "/trafico.png", time)
+            mail.asyncsendAb(path + "/trafico.png", datetime.datetime.now().time())
 
     if begin_aberration and not isAberration:
         begin_aberration = 0
         if not number_of_end_aberrations:
-            print(f"Enden aberration at {datetime.datetime.now().time()}")
+            #print(f"Enden aberration at {datetime.datetime.now().time()}")
             number_of_end_aberrations += 1
-            mail.asyncsendAb(path + "/trafico.png", time)
+            mail.asyncsendAb(path + "/trafico.png", datetime.datetime.now().time())
 
 
 def updateAndDumpRRDDatabase(path, value):

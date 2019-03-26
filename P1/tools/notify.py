@@ -47,12 +47,13 @@ def sendemail(typedata, threshold, imagepath):
         last_email = datetime.datetime.now()
         print("Email Sended")
 
-def asyncsendAb(imagepath, time):
+def sendemailAb(imagepath, time):
 
-    sg = sendgrid.SendGridAPIClient(apikey='API')
-    from_email = Email("email@hotmail.com")
-    to_email = Email("email@gmail.com")
+    sg = sendgrid.SendGridAPIClient(apikey='API KEY')
+    from_email = Email("xx@hotmail.com")
+    to_email = Email("xx@gmail.com")
     subject = "Notificación"
+    time = time.isoformat()
     content = Content("text/plain", "Fallas encontradas en " + time)
     with open(imagepath,'rb') as f:
         data = f.read()
