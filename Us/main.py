@@ -19,7 +19,7 @@ def dowloadFile(ip):
     print(f"Descargando archivo de congiruración de {ip}")
     try:
         os.mkdir("download/" + ip)
-        ftp.retrbinary("RETR " + "startup-config" ,open("download/" + filename, 'wb').write)
+        ftp.retrbinary("RETR " + "startup-config" ,open("./dfiles/" + filename, 'wb').write)
         print("Descargado archivo de configuracion")
     except:
         print("Error tratando de descargar el archivo")
