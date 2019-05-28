@@ -2,6 +2,7 @@ from difflib import Differ
 import filecmp, time, sys, os
 import telnetlib, ftplib
 
+
 def dowloadFile(ip):
     tel = telnetlib.Telnet(ip, 23)
     tel.read_until("User: ")
@@ -76,3 +77,6 @@ if __name__== "__main__":
         file1 = input("Archivo1: ")
         file2 = input("Archivo2: ")
         compareFiles(file1, file2)
+    else:
+        ip = input("Ip: ")
+        community = input("Comunidad: ")
