@@ -1,6 +1,6 @@
 certifi==2018.11.29
 freeport==0.1.9
-numpy==1.16.1
+numpy==1.22.0
 Pillow==5.4.1
 ply==3.11
 pyasn1==0.4.5
