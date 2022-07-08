@@ -43,7 +43,7 @@ scipy==0.19.1
 SecretStorage==2.3.1
 six==1.12.0
 subprocess32==3.2.7
-suds==0.4
+suds==1.0.0
 tftpy==0.8.0
 urllib3==1.25.2
 zope.interface==4.6.0
