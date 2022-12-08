@@ -1,4 +1,4 @@
-certifi==2018.11.29
+certifi==2022.12.7
 freeport==0.1.9
 numpy==1.16.1
 Pillow==5.4.1
